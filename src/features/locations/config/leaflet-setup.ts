@@ -9,15 +9,21 @@ import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
-// Sobrescribir la propiedad _getIconUrl para evitar errores en los patrones de URL
-delete (L.Icon.Default.prototype as any)._getIconUrl
+// En entorno de pruebas, L.Icon.Default puede no estar definido
+// Solo aplicamos la configuración en entorno de producción
+if (process.env.NODE_ENV !== 'test' && L.Icon && L.Icon.Default) {
+  // Sobrescribir la propiedad _getIconUrl para evitar errores en los patrones de URL
+  if ((L.Icon.Default.prototype as { _getIconUrl?: unknown })._getIconUrl) {
+    delete (L.Icon.Default.prototype as { _getIconUrl?: unknown })._getIconUrl
+  }
 
-// Configurar los iconos por defecto de Leaflet con las rutas correctas
-L.Icon.Default.mergeOptions({
-  iconUrl,
-  iconRetinaUrl,
-  shadowUrl,
-})
+  // Configurar los iconos por defecto de Leaflet con las rutas correctas
+  L.Icon.Default.mergeOptions({
+    iconUrl,
+    iconRetinaUrl,
+    shadowUrl,
+  })
+}
 
 // Exportar la referencia a L para asegurar que la configuración se ha aplicado
 export default L
