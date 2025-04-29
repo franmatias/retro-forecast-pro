@@ -1,0 +1,16 @@
+{
+    "extends": "./tsconfig.json",
+    "include": [
+        "src/**/__tests__/**/*.ts",
+        "src/**/__tests__/**/*.spec.ts",
+        "src/**/__tests__/**/*.test.ts"
+    ],
+    "compilerOptions": {
+        "types": [
+            "node",
+            "jsdom",
+            "vitest/globals",
+            "@vue/test-utils"
+        ]
+    }
+}
